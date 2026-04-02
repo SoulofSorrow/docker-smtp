@@ -1,0 +1,36 @@
+services:
+  mail:
+    image: ghcr.io/soulofsorrow/docker-smtp:latest
+    restart: always
+    ports:
+      - "192.168.178.39:25:25"
+    environment:
+      # Hostname des Mailservers
+      MAILNAME: mail.domain.tld
+
+      # Smarthost für ausgehende E-Mails (Gmail)
+      RELAY_HOST: smtp.gmail.com
+      RELAY_PORT: 587
+      RELAY_USERNAME: user@gmail.com
+      RELAY_PASSWORD: your-app-password
+
+      # IP-Adressen, auf denen Exim auf eingehende SMTP-Verbindungen hört
+      # Leer lassen = alle Interfaces; Semikolon-getrennte Liste für spezifische IPs
+      LOCAL_INTERFACES: "127.0.0.1;::1;192.168.178.39"
+
+      # Netzwerke, für die E-Mails weitergeleitet werden dürfen
+      RELAY_NETS: "192.168.178.0/24"
+
+      # Weitere Domains, für die E-Mails angenommen werden (optional)
+      # OTHER_HOSTNAMES: "domain.tld"
+
+      # Weitere Relay-Domains (optional)
+      # RELAY_DOMAINS: ""
+
+      # Lokalen Mailnamen in ausgehenden E-Mails verbergen (true/false)
+      HIDE_MAILNAME: "false"
+
+      # Zustellmethode für lokale E-Mails:
+      #   mail_spool      - traditionelles mbox-Format in /var/mail/
+      #   maildir_home    - Maildir-Format im Home-Verzeichnis (~/.Maildir/)
+      LOCAL_DELIVERY: maildir_home
